@@ -64,4 +64,12 @@ public class CompanyService {
 
         return companyDto;
     }
+
+    public List<String> getCompanyNamesByPrefix(String prefix) {
+        List<Company> companies = companyRepository.findByNameStartingWithIgnoreCase(prefix);
+        return companies.stream()
+                .map(Company::getName)
+                .limit(10)
+                .collect(Collectors.toList());
+    }
 }
