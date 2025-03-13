@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,7 +121,7 @@ public class YahooFinanceScraper implements Scraper {
                         float dividendValue = Float.parseFloat(dividendValueText);
 
                         DividendDto dividendDto = DividendDto.builder()
-                                .date(LocalDateTime.of(year, month, day, 0, 0))
+                                .date(LocalDateTime.of(year, month, day, 0, 0).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                                 .dividend(dividendValue)
                                 .build();
 

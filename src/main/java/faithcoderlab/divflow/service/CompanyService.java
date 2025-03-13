@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,7 +55,7 @@ public class CompanyService {
         List<Dividend> dividends = scrapedResult.getDividends().stream()
                 .map(e -> Dividend.builder()
                         .company(company)
-                        .date(e.getDate())
+                        .date(LocalDateTime.parse(e.getDate()))
                         .dividend(e.getDividend())
                         .build())
                 .collect(Collectors.toList());

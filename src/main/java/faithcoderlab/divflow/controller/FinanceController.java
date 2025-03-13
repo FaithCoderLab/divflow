@@ -27,9 +27,12 @@ public class FinanceController {
         try {
             ScrapedResult result = financeService.getDividendByCompanyName(companyName);
             return ResponseEntity.ok(result);
+        } catch (CustomException e) {
+            log.error("Custom exception: " + e.getMessage());
+            throw e;
         } catch (Exception e) {
             log.error("Failed to get dividend info: " + e.getMessage());
-            throw new CustomException(ErrorCode.COMPANY_NOT_FOUND);
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 }
