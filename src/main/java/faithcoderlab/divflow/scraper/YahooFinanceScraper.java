@@ -151,10 +151,26 @@ public class YahooFinanceScraper implements Scraper {
             log.info("Scraping company info URL: {}", url);
             Document document = Jsoup.connect(url).get();
 
-            Element titleEle = document.select("h1").first();
+            String pageTitle = document.title();
+            log.info("Page title: {}", pageTitle);
+
+            Elements h1Elements = document.select("h1");
+            log.info("Found {} h1 elements", h1Elements.size());
+
+            for (int i = 0; i < h1Elements.size(); i++) {
+                Element h1 = h1Elements.get(i);
+                log.info("H1 #{}: class='{}', text='{}'", i+1, h1.className(), h1.text());
+            }
+
+            Element titleEle = document.select("h1.yf-xxbei9").first();
             if (titleEle == null) {
-                log.error("No h1 element found");
-                return null;
+                log.error("No h1 with class y-fxxbei9 found, trying generic h1");
+                titleEle = document.select("h1").first();
+
+                if (titleEle == null) {
+                    log.error("No h1 element found at all");
+                    return null;
+                }
             }
 
             String title = titleEle.text();
