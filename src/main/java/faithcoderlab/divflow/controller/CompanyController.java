@@ -40,4 +40,11 @@ public class CompanyController {
         Page<CompanyDto> companies = companyService.getAllCompanies(page, size);
         return ResponseEntity.ok(companies);
     }
+
+    @DeleteMapping("/{ticker}")
+    public ResponseEntity<?> deleteCompany(@PathVariable String ticker) {
+        log.debug("company delete -> " + ticker);
+        companyService.deleteCompany(ticker);
+        return ResponseEntity.ok().build();
+    }
 }
