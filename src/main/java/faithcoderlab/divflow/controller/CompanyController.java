@@ -4,6 +4,7 @@ import faithcoderlab.divflow.dto.CompanyDto;
 import faithcoderlab.divflow.service.CompanyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,5 +29,15 @@ public class CompanyController {
     public ResponseEntity<?> autocomplete(@RequestParam String keyword) {
         List<String> result = companyService.getCompanyNamesByPrefix(keyword);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllCompanies(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        log.debug("company get all -> page: {}, size: {}", page, size);
+        Page<CompanyDto> companies = companyService.getAllCompanies(page, size);
+        return ResponseEntity.ok(companies);
     }
 }

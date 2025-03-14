@@ -11,6 +11,8 @@ import faithcoderlab.divflow.repository.DividendRepository;
 import faithcoderlab.divflow.scraper.Scraper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,5 +73,11 @@ public class CompanyService {
                 .map(Company::getName)
                 .limit(10)
                 .collect(Collectors.toList());
+    }
+
+    public Page<CompanyDto> getAllCompanies(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Company> companyPage = companyRepository.findAll(pageRequest);
+        return companyPage.map(CompanyDto::fromEntity);
     }
 }
