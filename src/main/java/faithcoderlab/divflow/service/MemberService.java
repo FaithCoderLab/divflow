@@ -33,4 +33,15 @@ public class MemberService {
 
         return memberRepository.save(member);
     }
+
+    public Member authenticate(String username, String password) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_CREDENTIALS));
+
+        if (!passwordEncoder.matches(password, member.getPassword())) {
+            throw new CustomException(ErrorCode.INVALID_CREDENTIALS);
+        }
+
+        return member;
+    }
 }
